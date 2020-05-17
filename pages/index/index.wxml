@@ -1,1 +1,44 @@
-<view>Hello world</view>
+<!-- 收获人信息 -->
+<view class="receiver-address-panel">
+  <block wx:if="{{addressList.length >0}}">
+    <view class="content-panel">
+      <view wx:for="{{addressList}}" wx:key="id" wx:for-index="index">
+        <view class="{{index===0?'':'has-line'}}"></view>
+        <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" data-address-id="{{item.id}}" data-index="{{index}}">
+          <view class="list-layout">
+          <!-- 如果当前列表还被复用于选择，则可以在这里进行判断 -->
+            <view wx:if="{{type==='choose' && addressId == item.id}}" class="icon">
+              <image src="{{CHOOSE_ICON}}" />
+            </view>
+            <view class="item-left" bindtap="chooseAddress" data-address-id="{{item.id}}">
+              <view class="contact-info">
+                <text class="receiver-name">{{item.buyerName}}</text>
+                <text class="receiver-tel">{{item.buyerTel}}</text>
+              </view>
+              <view class="address-info">
+                <text class="specific-address">{{item.detailAddress}}</text>
+                <text wx:if="{{item.defaultAddress}}" class="default-address">默认</text>
+              </view>
+            </view>
+            <view class="edit-address" catchtap="editAddress" data-address-id="{{item.id}}">
+              <image mode="widthFix" src="{{EDIT_ICON}}" />
+            </view>
+          </view>
+        </mp-slideview>
+      </view>
+    </view>
+  </block>
+  <!-- 没有收获地址 -->
+  <block wx:elif="{{addressList.length ===0}}">
+    <view class="no-address">
+      <image mode="widthFix" src="{{EMPTY_ADDRESS}}" />
+    </view>
+  </block>
+
+  <!-- 新增收货人信息 -->
+  <view class="add-address-bg" style="padding-bottom: {{safeAreaBottom || 12}}rpx;">
+    <view class="add-address address-add" bindtap="addAddress">
+      <view class="add-address-desc">新增收货人信息</view>
+    </view>
+  </view>
+</view>
